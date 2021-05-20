@@ -1,0 +1,56 @@
+//The project introduces you to polynomial regresssion on the dataset of bluegill fish, how their age's and length correlate each other and give 95% accurate results.//
+//Google Collaboratory Notebook extension- .ipynb, VS code python and Anaconda installed to perform these operations//
+
+import numpy as np // Importing the Libraries. // Data set Link- https://online.stat.psu.edu/onlinecourses/sites/stat501/files/data/bluegills.txt
+import pandas as pd 
+import matplotlib.pyplot as plt
+
+dataset = pd.read_csv(r'Data.csv')//Importing the data.
+X = dataset.iloc[:, 0:-1].values //Selecting rows and columns according to the dataset.
+y = dataset.iloc[:, -1].values // Y is dependent variable and X is independent variable, Y = b0x + b1x^2.
+
+from sklearn.linear_model import LinearRegression // From Scikit Learn using the Linear Regression Class
+lin_reg = LinearRegression()
+lin_reg.fit(X, y)
+
+from sklearn.preprocessing import PolynomialFeatures // Using Polynomial Features class.
+poly_regg = PolynomialFeatures(degree = 2) // Degree selection is trail and Error Concept.
+X_poly = poly_regg.fit_transform(X)
+lin_reg_2 = LinearRegression() 
+lin_reg_2.fit(X_poly,y)
+
+plt.scatter(X, y, color = 'red')// Linear Regression will show linear predictions
+plt.plot(X, lin_reg.predict(X), color = 'blue')
+plt.title('Age vs Length (Bluegill Fish)')
+plt.xlabel('Age')
+plt.ylabel('Length')
+plt.show()
+
+plt.scatter(X, y, color = 'red')// Polynomial Regression with better accuracy and prediction.
+plt.plot(X, lin_reg_2.predict(X_poly), color = 'blue')
+plt.title('Age vs Length (Bluegill Fish)')
+plt.xlabel('Age' in years)
+plt.ylabel('Length' in mm)
+plt.show()
+
+
+
+X_grid = np.arange(min(X), max(X), 0.1)// Offers good scale on graph.
+X_grid = X_grid.reshape((len(X_grid), 1))
+plt.scatter(X, y, color = 'red')
+plt.plot(X_grid, lin_reg_2.predict(poly_regg.fit_transform(X_grid)), color = 'blue')
+plt.title('Age vs Length')
+plt.xlabel('Age (years)')
+plt.ylabel('Length(mm)')
+plt.show()
+
+lin_reg_2.predict(poly_regg.fit_transform([[5]])) = 165.902mm 95%accurate.
+
+
+
+
+
+
+
+
+
